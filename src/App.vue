@@ -1,11 +1,15 @@
 <script setup>
-import { ref } from 'vue'
+import { ref,onMounted } from 'vue'
 import { useTaskStore } from './stores/TaskStore'
 import TaskDetails from './components/TaskDetails.vue'
 import TaskForm from './components/TaskForm.vue'
 
 const filter = ref('all')
 const taskStore = useTaskStore()
+
+onMounted(() => {
+    taskStore.getTasks()
+})
 
 </script>
 
@@ -28,6 +32,9 @@ const taskStore = useTaskStore()
       <button @click="filter = 'all'">All tasks</button>
       <button @click="filter = 'favs'">Fav tasks</button>
     </nav>
+
+    <!-- loading -->
+    <div class="loading" v-if="taskStore.loading">Loading tasks...</div>
 
     <!-- task list -->
     <div class="task-list" v-if="filter === 'all'">
